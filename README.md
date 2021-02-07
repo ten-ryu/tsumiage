@@ -1,24 +1,97 @@
 # README
 
-This README would normally document whatever steps are necessary to get the
-application up and running.
+# テーブル設計
 
-Things you may want to cover:
+## users テーブル
 
-* Ruby version
+| Column          | Type   | Options     |
+| --------------- | ------ | ----------- |
+| nickname        | string | null: false |
+| email           | string | null: false |
+| password        | string | null: false |
+| introduction    | text   | null: false |
 
-* System dependencies
+### Association
 
-* Configuration
+- has_many :comments
+- has_many :expressions
+- has_many :objectives
+- has_many :prides
+- has_many :likes
 
-* Database creation
+## connections テーブル
 
-* Database initialization
+| Column       | Type    | Options     |
+| -------------| ------- | ------------|
+| followed_id  | integer | null: false |
+| follower_id  | integer | null: false |
 
-* How to run the test suite
+### Association
 
-* Services (job queues, cache servers, search engines, etc.)
+- belongs_to :item
+- belongs_to :user
+- has_one :address
 
-* Deployment instructions
+## comments テーブル
 
-* ...
+| Column          | Type       | Options                        |
+| --------------- | ---------- | ------------------------------ |
+| user_id         | integer    | null: false, foreign_key:true  |
+| prides_id       | integer    | null: false                    |
+| detail          | text       | null: false                    |
+ 
+
+### Association
+
+- belongs_to :user
+- belongs_to :pride
+
+## expressions テーブル
+
+| Column          | Type       | Options                        |
+| --------------- | ---------- | ------------------------------ |
+| user_id         | integer    | null: false, foreign_key: true |
+| objective_id    | integer    | null: false, foreign_key: true |
+
+### Association
+
+- belongs_to :user
+- belongs_to :objective
+
+## objectives テーブル
+
+| Column      | Type       | Options                        |
+| ------------| ---------- | ------------------------------ |
+| user_id     | integer    | null: false, foreign_key: true |
+| title       | string     | null: false                    |
+
+### Association
+
+- has_one :expression
+- belongs_to :user
+
+## prides テーブル
+
+| Column          | Type       | Options                        |
+| --------------- | ---------- | ------------------------------ |
+| user_id         | integer    | null: false, foreign_key:true  |
+| title           | string     | null: false                    |
+| detail          | text       | null: false                    |
+
+### Association
+
+- belongs_to :user
+- has_many :comments
+- has_many :likes
+
+## likes テーブル
+
+| Column          | Type       | Options                        |
+| --------------- | ---------- | ------------------------------ |
+| user_id         | integer    | null: false, foreign_key: true |
+| prides_id       | integer    | null: false, foreign_key: true |
+
+### Association
+
+- belongs_to :user
+- belongs_to :pride
